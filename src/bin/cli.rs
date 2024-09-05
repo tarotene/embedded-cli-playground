@@ -28,18 +28,16 @@ impl embedded_io::ErrorType for Writer {
 }
 
 impl embedded_io::Write for Writer {
-    #[allow(unused_variables)]
     fn write(&mut self, buf: &[u8]) -> Result<usize, Self::Error> {
-        for byte in buf {
-            // TODO: エラー情報ぶち抜く
-            self.serial.write(*byte).map_err(|_| embedded_io::ErrorKind::Other)?;
+        for &b in buf {
+            stm32f3xx_hal::nb::block!(self.serial.write(b)).unwrap();
         }
         Ok(buf.len())
     }
 
     fn flush(&mut self) -> Result<(), Self::Error> {
         // TODO: エラー情報ぶち抜く
-        self.serial.flush().map_err(|_| embedded_io::ErrorKind::Other)?;
+        stm32f3xx_hal::nb::block!(self.serial.flush()).unwrap();
         Ok(())
     }
 }
@@ -80,7 +78,7 @@ fn main() -> ! {
         (COMMAND_BUFFER.as_mut(), HISTORY_BUFFER.as_mut())
     };
 
-    defmt::println!("Creating CLI...");
+    defmt::info!("Creating CLI...");
 
     let mut cli = embedded_cli::cli::CliBuilder::default()
         .writer(writer)
@@ -90,12 +88,14 @@ fn main() -> ! {
         .ok()
         .unwrap();
 
-    defmt::println!("CLI created!");
+    defmt::info!("CLI created!");
 
-    // let _ = cli.write(|writer| {
-    //     writer.write_str("Welcome to the embedded CLI!\r\n")?;
-    //     Ok(())
-    // });
+    let _ = cli.write(|writer| {
+        writer.write_str("Welcome to the embedded CLI!\r\n")?;
+        Ok(())
+    });
+
+    defmt::info!("Entering loop...");
 
     loop {}
 }
