@@ -20,7 +20,7 @@ defmt-rtt = "0.4"
 panic-probe = { version = "0.3", features = ["print-defmt"] }
 cortex-m-semihosting = "0.5.0"
 stm32f3xx-hal = { version = "0.10.0", features = ["ld", "rt", "stm32f303xc"] }
-embedded-cli = "0.2.1"
+embedded-cli = { path = "./embedded-cli-rs/embedded-cli" }
 embedded-io = "0.6.1"
 ufmt = "0.2.0"
 
