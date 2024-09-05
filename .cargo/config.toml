@@ -1,5 +1,5 @@
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
-runner = "probe-rs run --chip STM32F303VCTx"
+runner = "probe-rs run --chip STM32F303VCTx --chip-description-path stm32f3xx.yaml"
 # runner = ["probe-rs", "run", "--chip", "$CHIP", "--log-format", "{L} {s}"]
 
 rustflags = [
