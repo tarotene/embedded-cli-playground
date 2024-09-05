@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "preLaunchTask": "${defaultBuildTask}",
+            "type": "probe-rs-debug",
+            "request": "launch",
+            "name": "probe_rs Executable Test",
+            "flashingConfig": {
+                "flashingEnabled": true,
+            },
+            "chip": "STM32F303VCTx",
+            "chipDescriptionPath": "${workspaceFolder}/STM32F303VCTx.yaml",
+            "coreConfigs": [
+                {
+                    "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/cli",
+                }
+            ]
+        }
+    ]
+}
